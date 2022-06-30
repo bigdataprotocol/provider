@@ -4,5 +4,7 @@ resources:
   - sa.yaml
   - secretproviderclass.yaml
   - deployment.yaml
+  - service.yaml
+  - hpa.yaml
 
 namespace: default

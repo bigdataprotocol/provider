@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'provider-{{ .Env.CHAIN }}'
+  labels:
+    chain: '{{ .Env.CHAIN }}'
+spec:
+  selector:
+    matchLabels:
+      app: 'provider-{{ .Env.CHAIN }}'
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: 'provider-{{ .Env.CHAIN }}'
+        image: '{{ .Env.IMAGE_URL }}'
+        resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 500m
+              memory: 500Mi
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: 'provider-{{ .Env.CHAIN }}'
+  labels:
+    chain: '{{ .Env.CHAIN }}'
+spec:
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: AverageValue
+        averageUtilization: 70

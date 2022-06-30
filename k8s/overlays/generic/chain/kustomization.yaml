@@ -4,6 +4,6 @@ bases:
   - ../../../base/chain
 
 patchesStrategicMerge:
-  - aquarius.yaml
+  - provider.yaml
 
 namespace: '{{ .Env.NAMESPACE }}'
